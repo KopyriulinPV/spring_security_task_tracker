@@ -3,7 +3,6 @@ import com.example.task_tracker.entity.Task;
 import com.example.task_tracker.repository.TaskRepository;
 import com.example.task_tracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
