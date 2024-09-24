@@ -1,14 +1,16 @@
 package com.example.task_tracker.mapper;
-import com.example.task_tracker.DTO.TaskDto;
+
 import com.example.task_tracker.entity.Task;
+import com.example.task_tracker.model.request.UpsertTaskRequest;
+import com.example.task_tracker.model.response.TaskResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TaskMapper {
 
-    TaskDto toDto(Task task);
+    TaskResponse toDto(Task task);
 
-    Task toEntity(TaskDto taskDto);
+    Task toEntity(UpsertTaskRequest upsertTaskRequest);
 
 }

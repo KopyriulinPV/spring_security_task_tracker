@@ -1,9 +1,12 @@
 package com.example.task_tracker.controller;
-import com.example.task_tracker.DTO.UserDto;
+
+import com.example.task_tracker.entity.RoleType;
 import com.example.task_tracker.mapper.UserMapper;
+import com.example.task_tracker.model.request.UpsertUserRequest;
+import com.example.task_tracker.model.response.UserResponse;
 import com.example.task_tracker.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,26 +21,31 @@ public class UserController {
     private final UserMapper userMapper;
 
     @GetMapping
-    public Flux<UserDto> findAllUsers() {
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MANAGER')")
+    public Flux<UserResponse> findAllUsers() {
         return userService.findAll().map(userMapper::toDto);
     }
 
     @GetMapping("/{id}")
-    public Mono<UserDto> findUserById(@PathVariable String id) {
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MANAGER')")
+    public Mono<UserResponse> findUserById(@PathVariable String id) {
         return userService.findById(id).map(userMapper::toDto);
     }
 
     @PostMapping
-    public Mono<UserDto> createUser(@RequestBody UserDto userDto) {
-        return userService.create(userMapper.toEntity(userDto)).map(userMapper::toDto);
+    public Mono<UserResponse> createUser(@RequestBody UpsertUserRequest upsertUserRequest,
+                                                                    @RequestParam RoleType role) {
+        return userService.create(userMapper.toEntity(upsertUserRequest), role).map(userMapper::toDto);
     }
 
     @PutMapping("/{id}")
-    public Mono<UserDto> updateUser(@PathVariable String id, @RequestBody UserDto userDto) {
-        return userService.update(id, userMapper.toEntity(userDto)).map(userMapper::toDto);
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MANAGER')")
+    public Mono<UserResponse> updateUser(@PathVariable String id, @RequestBody UpsertUserRequest upsertUserRequest) {
+        return userService.update(id, userMapper.toEntity(upsertUserRequest)).map(userMapper::toDto);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MANAGER')")
     public Mono<Void> deleteUser(@PathVariable String id) {
         return userService.deleteById(id);
     }
