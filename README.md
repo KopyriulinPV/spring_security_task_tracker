@@ -1,5 +1,7 @@
 REST API (добавлены Basic-аутентификация и права пользователей на доступ к методам контроллеров)
-для трекера задач. 
+для трекера задач.
+
+Используемые технологии: Spring Boot, Reactive MongoDB, Spring Security, Spring WebFlux, Lombok, JUnit, MapStruct, Reactor.
 
 Контроллеры написаны с использованием Mono и Flux.
 
